@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="http://ehcache.org/ehcache.xsd"
+	updateCheck="false">
+
+	<diskStore path="java.io.tmpdir/Tmp_EhCache" />
+
+	<defaultCache eternal="false" maxElementsInMemory="5000"
+		overflowToDisk="false" diskPersistent="false" timeToIdleSeconds="0"
+		timeToLiveSeconds="600" memoryStoreEvictionPolicy="LRU" />
+
+	<!-- maxElementsInMemory 内存中最大缓存对象数, diskPersistent 是否缓存虚拟机重启期数据, timeToLiveSeconds 
+		设定对象允许存在于缓存中的最长时间，以秒为单位 -->
+	<cache name="syscfg_eh" eternal="false" maxElementsInMemory="10000"
+		overflowToDisk="false" diskPersistent="false" timeToIdleSeconds="0"
+		timeToLiveSeconds="300" memoryStoreEvictionPolicy="LRU" />
+
+	<cache name="airport_eh" eternal="false" maxElementsInMemory="10000"
+		overflowToDisk="false" diskPersistent="false" timeToIdleSeconds="0"
+		timeToLiveSeconds="1200" memoryStoreEvictionPolicy="LRU" />
+		
+	<cache name="filterAirline_eh" eternal="false" maxElementsInMemory="10000"
+		overflowToDisk="false" diskPersistent="false" timeToIdleSeconds="0"
+		timeToLiveSeconds="900" memoryStoreEvictionPolicy="LRU" />
+
+	<cache name="filterDate_eh" eternal="false" maxElementsInMemory="2000"
+		overflowToDisk="false" diskPersistent="false" timeToIdleSeconds="0"
+		timeToLiveSeconds="900" memoryStoreEvictionPolicy="LRU" />
+
+	<!-- 新退改签设置 -->
+	<cache name="rulefeecfg_eh" eternal="false" maxElementsInMemory="2000"
+		   overflowToDisk="false" diskPersistent="false" timeToIdleSeconds="0"
+		   timeToLiveSeconds="900" memoryStoreEvictionPolicy="LRU" />
+		
+</ehcache>

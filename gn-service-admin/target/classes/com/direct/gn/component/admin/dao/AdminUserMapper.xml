@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.direct.gn.component.admin.dao.AdminUserMapper" >
+  <resultMap id="BaseResultMap" type="com.direct.gn.component.admin.model.AdminUser" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="username" property="username" jdbcType="VARCHAR" />
+    <result column="passwd" property="passwd" jdbcType="VARCHAR" />
+    <result column="email" property="email" jdbcType="VARCHAR" />
+    <result column="telphone" property="telphone" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="role_id" property="roleId" jdbcType="INTEGER" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    id, username, passwd, email, telphone, status, role_id
+  </sql>
+
+  <sql id="select_where" >
+    where 1 = 1
+    <if test="username != null and username != ''">
+        And username=#{username}
+    </if>   
+    <if test="passwd != null and passwd != ''">
+        And passwd=#{passwd}
+    </if>   
+    <if test="email != null and email != ''">
+        And email=#{email}
+    </if>   
+    <if test="telphone != null and telphone != ''">
+        And telphone=#{telphone}
+    </if>   
+    <if test="status != null and status != ''">
+        And status=#{status}
+    </if>   
+    <if test="roleId != null">
+        And role_id=#{roleId}
+    </if>                          
+  </sql>
+
+  <select id="selectListCount" resultType="java.lang.Integer" parameterType="map" >
+    select 
+    count(1)
+    from admin_user
+    <include refid="select_where" />
+  </select>
+  
+  <select id="selectList" resultMap="BaseResultMap" parameterType="map" >
+    select 
+    <include refid="Base_Column_List" />
+    from admin_user
+    <include refid="select_where" />
+  </select>   
+  
+  <select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from admin_user
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  
+  <delete id="deleteById" parameterType="com.direct.gn.component.admin.model.AdminUser" >
+    delete from admin_user
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+
+  <insert id="insert" parameterType="com.direct.gn.component.admin.model.AdminUser" >
+    insert into admin_user
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+
+      <if test="username != null" >
+        username,
+      </if>
+      <if test="passwd != null" >
+        passwd,
+      </if>
+      <if test="email != null" >
+        email,
+      </if>
+      <if test="telphone != null" >
+        telphone,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="roleId != null" >
+        role_id,
+      </if>     
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+
+      <if test="username != null" >
+        #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="passwd != null" >
+        #{passwd,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="telphone != null" >
+        #{telphone,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="roleId != null" >
+        #{roleId,jdbcType=INTEGER},
+      </if>        
+    </trim>
+     <selectKey keyProperty="id" resultType="int">
+         Select Last_Insert_ID()
+     </selectKey>      
+  </insert>
+  
+  <update id="updateById" parameterType="com.direct.gn.component.admin.model.AdminUser" >
+    update admin_user
+    <set >
+      <if test="username != null" >
+        username = #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="passwd != null" >
+        passwd = #{passwd,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="telphone != null" >
+        telphone = #{telphone,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="roleId != null" >
+        role_id = #{roleId,jdbcType=INTEGER},
+      </if>        
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+</mapper>

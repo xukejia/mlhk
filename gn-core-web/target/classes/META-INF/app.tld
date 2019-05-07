@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<taglib xmlns="http://java.sun.com/xml/ns/j2ee"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-jsptaglibrary_2_0.xsd"
+        version="2.0">
+
+    <description>chobits81.cc Tag Library</description>
+    <tlib-version>3.0</tlib-version>
+    <short-name>app</short-name>
+    <uri>http://www.chobits81.cc/tags/app</uri>
+
+    <tag>
+        <name>page</name>
+        <tag-class>com.direct.gn.web.tag.PaginationTag</tag-class>
+        <body-content>empty</body-content>
+        <attribute>
+            <description>form id</description>
+            <name>formId</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <description>form url</description>
+            <name>actionUrl</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <description>showPageSize</description>
+            <name>showPageSize</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+    </tag>
+
+    <tag>
+        <name>formatDate</name>
+        <tag-class>com.direct.gn.web.tag.FormatDateTag</tag-class>
+        <body-content>empty</body-content>
+        <attribute>
+            <description>date value</description>
+            <name>codeValue</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <description>formate pattern</description>
+            <name>pattern</name>
+            <required>true</required>
+            <rtexprvalue>false</rtexprvalue>
+        </attribute>
+    </tag>
+
+    <tag>
+        <name>selectEmunTag</name>
+        <tag-class>com.direct.gn.web.tag.SelectEmunTag</tag-class>
+        <body-content>empty</body-content>
+        <attribute>
+            <description>select name and id</description>
+            <name>selectName</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <description>select value</description>
+            <name>selectValue</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <description>emun object name</description>
+            <name>emunName</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <description>select css class</description>
+            <name>cssClass</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <description>select option show all, default is false</description>
+            <name>allOption</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <description>select onChange function</description>
+            <name>onChange</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+    </tag>
+
+    <tag>
+        <name>getEmunTag</name>
+        <tag-class>com.direct.gn.web.tag.GetEmunTag</tag-class>
+        <body-content>empty</body-content>
+        <attribute>
+            <description>emun object name</description>
+            <name>emunName</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <description>emun code</description>
+            <name>emunCode</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+    </tag>
+
+    <tag>
+        <name>selectDbEmunTag</name>
+        <tag-class>com.direct.gn.web.tag.SelectDbEmunTag</tag-class>
+        <body-content>empty</body-content>
+        <attribute>
+            <description>select name and id</description>
+            <name>selectName</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <description>select value</description>
+            <name>selectValue</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <description>emun object name</description>
+            <name>emunName</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <description>select css class</description>
+            <name>cssClass</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <description>select option show all, default is false</description>
+            <name>allOption</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <description>select onChange function</description>
+            <name>onChange</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <description>select empty name</description>
+            <name>emptyName</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+
+        <attribute>
+            <description>disabled select</description>
+            <name>disabled</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+    </tag>
+
+    <tag>
+        <name>getDbEmunTag</name>
+        <tag-class>com.direct.gn.web.tag.GetDbEmunTag</tag-class>
+        <body-content>empty</body-content>
+        <attribute>
+            <description>emun object name</description>
+            <name>emunName</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <description>emun code</description>
+            <name>emunCode</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+    </tag>
+</taglib>

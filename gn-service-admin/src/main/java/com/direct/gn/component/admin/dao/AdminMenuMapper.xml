@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.direct.gn.component.admin.dao.AdminMenuMapper">
+	<resultMap id="BaseResultMap" type="com.direct.gn.component.admin.model.AdminMenu">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="parent_id" property="parentId" jdbcType="INTEGER" />
+		<result column="menu_name" property="menuName" jdbcType="VARCHAR" />
+		<result column="menu_level" property="menuLevel" jdbcType="VARCHAR" />
+		<result column="type" property="type" jdbcType="VARCHAR" />
+		<result column="url" property="url" jdbcType="VARCHAR" />
+		<result column="remark" property="remark" jdbcType="VARCHAR" />
+		<result column="sort" property="sort" jdbcType="INTEGER" />
+	</resultMap>
+	
+	<sql id="Base_Column_List">
+		id, parent_id, menu_name, menu_level, url, remark, sort , type
+	</sql>
+
+	<sql id="select_where">
+		where 1 = 1
+		<if test="parentId != null">
+			And parent_id=#{parentId}
+		</if>
+		<if test="menuName != null and menuName != ''">
+			And menu_name=#{menuName}
+		</if>
+		<if test="menuLevel != null and menuLevel != ''">
+			And menu_level=#{menuLevel}
+		</if>
+	</sql>
+
+	<select id="selectListCount" resultType="java.lang.Integer" parameterType="map">
+		select
+		count(1)
+		from admin_menu
+		<include refid="select_where" />
+	</select>
+
+	<select id="selectList" resultMap="BaseResultMap" parameterType="map">
+		select
+		<include refid="Base_Column_List" />
+		from admin_menu
+		<include refid="select_where" />
+	</select>
+
+	<select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from admin_menu
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+
+	<delete id="deleteById" parameterType="com.direct.gn.component.admin.model.AdminMenu">
+		delete from admin_menu
+		where id = #{id,jdbcType=INTEGER}
+	</delete>
+
+	<insert id="insert" parameterType="com.direct.gn.component.admin.model.AdminMenu">
+		insert into admin_menu
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+
+			<if test="parentId != null">
+				parent_id,
+			</if>
+			<if test="menuName != null">
+				menu_name,
+			</if>
+			<if test="menuLevel != null">
+				menu_level,
+			</if>
+			<if test="url != null">
+				url,
+			</if>
+			<if test="remark != null">
+				remark,
+			</if>
+			<if test="sort != null">
+				sort,
+			</if>
+			<if test="type != null">
+				type,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+
+			<if test="parentId != null">
+				#{parentId,jdbcType=INTEGER},
+			</if>
+			<if test="menuName != null">
+				#{menuName,jdbcType=VARCHAR},
+			</if>
+			<if test="menuLevel != null">
+				#{menuLevel,jdbcType=VARCHAR},
+			</if>
+			<if test="url != null">
+				#{url,jdbcType=VARCHAR},
+			</if>
+			<if test="remark != null">
+				#{remark,jdbcType=VARCHAR},
+			</if>
+			<if test="sort != null">
+				#{sort,jdbcType=INTEGER},
+			</if>
+			<if test="type != null">
+				#{type,jdbcType=VARCHAR},
+			</if>
+		</trim>
+		<selectKey keyProperty="id" resultType="int">
+			Select Last_Insert_ID()
+		</selectKey>
+	</insert>
+
+	<update id="updateById" parameterType="com.direct.gn.component.admin.model.AdminMenu">
+		update admin_menu
+		<set>
+			<if test="parentId != null">
+				parent_id = #{parentId,jdbcType=INTEGER},
+			</if>
+			<if test="menuName != null">
+				menu_name = #{menuName,jdbcType=VARCHAR},
+			</if>
+			<if test="menuLevel != null">
+				menu_level = #{menuLevel,jdbcType=VARCHAR},
+			</if>
+			<if test="url != null">
+				url = #{url,jdbcType=VARCHAR},
+			</if>
+			<if test="remark != null">
+				remark = #{remark,jdbcType=VARCHAR},
+			</if>
+			<if test="sort != null">
+				sort = #{sort,jdbcType=INTEGER},
+			</if>
+			<if test="type != null">
+				type = #{type,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+
+	<select id="getUserMenusByRoleId" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from admin_menu
+    	where parent_id = '-1' or (id in (select menu_id from admin_menu_role where role_id=#{roleId,jdbcType=INTEGER}))
+		order by sort
+	</select>
+
+</mapper>

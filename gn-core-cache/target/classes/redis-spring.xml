@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:cache="http://www.springframework.org/schema/cache"
+       xsi:schemaLocation="
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+		http://www.springframework.org/schema/context  http://www.springframework.org/schema/context/spring-context-4.3.xsd
+		http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache-4.3.xsd"
+       default-lazy-init="true">
+
+    <description>缓存管理 redis 实现</description>
+    <!-- redis Start -->
+
+    <cache:annotation-driven/>
+
+    <!-- 对象池配置： -->
+    <bean id="redisJedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
+        <property name="minIdle" value="1"/>
+        <property name="maxTotal" value="${redis.maxActive}"/>
+        <property name="maxIdle" value="${redis.maxIdle}"/>
+        <property name="maxWaitMillis" value="${redis.maxWait}"/>
+        <property name="testOnBorrow" value="true"/>
+        <property name="testOnReturn" value="true"/>
+    </bean>
+
+    <!-- 工厂实现： -->
+    <bean id="redisJedisConnectionFactory"
+          class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory"
+          destroy-method="destroy">
+        <property name="hostName" value="${redis.host}"/>
+        <property name="port" value="${redis.port}"/>
+        <property name="password" value="${redis.pass}"/>
+        <property name="poolConfig" ref="redisJedisPoolConfig"/>
+        <property name="timeout" value="${redis.timeout}"/>
+        <property name="usePool" value="true"/>
+    </bean>
+
+    <bean id="stringSerializer"
+          class="org.springframework.data.redis.serializer.StringRedisSerializer"/>
+
+    <bean id="redisCacheTemplate" class="org.springframework.data.redis.core.RedisTemplate">
+        <property name="connectionFactory" ref="redisJedisConnectionFactory"/>
+        <property name="hashKeySerializer" ref="stringSerializer"/>
+        <property name="keySerializer" ref="stringSerializer"/>
+        <property name="stringSerializer" ref="stringSerializer"/>
+        <!-- <property name="valueSerializer" ref="jackson2JsonRedisSerializer"
+            /> -->
+        <!-- <property name="hashValueSerializer" ref="jackson2JsonRedisSerializer"
+            /> -->
+        <property name="enableTransactionSupport" value="false"/>
+    </bean>
+    <!-- redis End -->
+
+    <bean id="cacheService" class="com.direct.gn.cache.service.impl.CacheServiceImpl">
+    </bean>
+    
+    <bean id="jedisCacheService" class="com.direct.gn.cache.service.impl.JedisCacheServiceImpl">
+    </bean>
+    
+     <bean id="qnPolicyCacheService" class="com.direct.gn.cache.service.impl.QNPolicyCacheServiceImpl">
+    </bean>
+    
+    <bean id="flightDemoneyCacheService" class="com.direct.gn.cache.service.impl.FlightDemoneyCacheServiceImpl">
+    </bean>
+    
+    <bean id="tbflightDemoneyCacheService" class="com.direct.gn.cache.service.impl.TBFlightDemoneyCacheServiceImpl">
+    </bean>
+    
+    <bean id="filterCacheService" class="com.direct.gn.cache.service.impl.FilterCacheServiceImpl">
+    </bean>
+    
+    <bean id="policyListCacheService" class="com.direct.gn.cache.service.impl.PolicyListCacheServiceImpl">
+    </bean>
+    
+    <bean id="gwListCacheService" class="com.direct.gn.cache.service.impl.GWListCacheServiceImpl">
+    </bean>
+
+    <bean id="otherPolicyCacheService" class="com.direct.gn.cache.service.impl.OtherPolicyCacheServiceImpl">
+    </bean>
+    
+    <bean id="policyCacheService" class="com.direct.gn.cache.service.impl.PolicyCacheServiceImpl">
+    </bean>
+    
+    <bean id="replaceCabinCacheService" class="com.direct.gn.cache.service.impl.ReplaceCabinCacheServiceImpl">
+    </bean>
+
+    <bean id="cacheManager" class="org.springframework.data.redis.cache.RedisCacheManager">
+        <constructor-arg ref="redisCacheTemplate"/>
+    </bean>
+    
+    <bean class="org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer" id="jacksonJsonRedisSerializer">
+        <constructor-arg type="java.lang.Class" value="java.lang.Object"/>
+    </bean>
+    
+    
+
+    <!-- 多个cacheTemplate -->
+    <!-- taobao's cacheTemplate -->
+    <bean id="redisCacheTemplateJedis" class="org.springframework.data.redis.core.RedisTemplate">
+        <property name="connectionFactory">
+            <bean class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory"
+                  destroy-method="destroy" p:hostName="${jedis.redis.host}" p:port="${jedis.redis.port}"
+                  p:password="${jedis.redis.pass}" p:poolConfig-ref="redisJedisPoolConfig"
+                  p:timeout="${jedis.redis.timeout}"
+                  p:usePool="true"/>
+        </property>
+        <property name="hashKeySerializer" ref="stringSerializer"/>
+        <property name="keySerializer" ref="stringSerializer"/>
+        <property name="stringSerializer" ref="stringSerializer"/>
+        <property name="valueSerializer" ref="jacksonJsonRedisSerializer" />
+        <property name="enableTransactionSupport" value="false"/>
+    </bean>
+    <!-- qunar's cacheTemplate -->
+    <bean id="redisCacheTemplatePolicyQU" class="org.springframework.data.redis.core.RedisTemplate">
+       <property name="connectionFactory">
+            <bean class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory"
+                  destroy-method="destroy" p:hostName="${jedis.redis.host}" p:port="${jedis.redis.port}"
+                  p:password="${jedis.redis.pass}" p:poolConfig-ref="redisJedisPoolConfig"
+                  p:timeout="${jedis.redis.timeout}"
+                  p:usePool="true"/>
+        </property>
+        <property name="hashKeySerializer" ref="stringSerializer"/>
+        <property name="keySerializer" ref="stringSerializer"/>
+        <property name="stringSerializer" ref="stringSerializer"/>
+        <property name="enableTransactionSupport" value="false"/>
+    </bean>
+    
+    <!-- qunar's cacheTemplate -->
+    <bean id="redisCacheTemplateFlightDemoney" class="org.springframework.data.redis.core.RedisTemplate">
+       <property name="connectionFactory">
+            <bean class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory"
+                  destroy-method="destroy" p:hostName="${flightdemoney.redis.host}" p:port="${flightdemoney.redis.port}"
+                  p:password="${flightdemoney.redis.pass}" p:poolConfig-ref="redisJedisPoolConfig"
+                  p:timeout="${flightdemoney.redis.timeout}"
+                  p:usePool="true"/>
+        </property>
+        <property name="hashKeySerializer" ref="stringSerializer"/>
+        <property name="keySerializer" ref="stringSerializer"/>
+        <property name="stringSerializer" ref="stringSerializer"/>
+        <property name="enableTransactionSupport" value="false"/>
+    </bean>
+    
+     <!-- taobao's cacheTemplate -->
+    <bean id="redisCacheTemplateFlightDemoneyTB" class="org.springframework.data.redis.core.RedisTemplate">
+       <property name="connectionFactory">
+            <bean class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory"
+                  destroy-method="destroy" p:hostName="${tbflightdemoney.redis.host}" p:port="${tbflightdemoney.redis.port}"
+                  p:password="${tbflightdemoney.redis.pass}" p:poolConfig-ref="redisJedisPoolConfig"
+                  p:timeout="${tbflightdemoney.redis.timeout}"
+                  p:usePool="true"/>
+        </property>
+        <property name="hashKeySerializer" ref="stringSerializer"/>
+        <property name="keySerializer" ref="stringSerializer"/>
+        <property name="stringSerializer" ref="stringSerializer"/>
+        <property name="enableTransactionSupport" value="false"/>
+    </bean>
+    
+         <!--redisCacheTemplateFilter -->
+    <bean id="redisCacheTemplateFilter" class="org.springframework.data.redis.core.RedisTemplate">
+       <property name="connectionFactory">
+            <bean class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory"
+                  destroy-method="destroy" p:hostName="${filter.redis.host}" p:port="${filter.redis.port}"
+                  p:password="${filter.redis.pass}" p:poolConfig-ref="redisJedisPoolConfig"
+                  p:timeout="${filter.redis.timeout}"
+                  p:usePool="true"/>
+        </property>
+        <property name="hashKeySerializer" ref="stringSerializer"/>
+        <property name="keySerializer" ref="stringSerializer"/>
+        <property name="stringSerializer" ref="stringSerializer"/>
+        <property name="enableTransactionSupport" value="false"/>
+    </bean>
+    
+      <!--redisCacheTemplatePolicyList -->
+    <bean id="redisCacheTemplatePolicyList" class="org.springframework.data.redis.core.RedisTemplate">
+       <property name="connectionFactory">
+            <bean class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory"
+                  destroy-method="destroy" p:hostName="${policylist.redis.host}" p:port="${policylist.redis.port}"
+                  p:password="${policylist.redis.pass}" p:poolConfig-ref="redisJedisPoolConfig"
+                  p:timeout="${policylist.redis.timeout}"
+                  p:usePool="true"/>
+        </property>
+        <property name="hashKeySerializer" ref="stringSerializer"/>
+        <property name="keySerializer" ref="stringSerializer"/>
+        <property name="stringSerializer" ref="stringSerializer"/>
+        <property name="enableTransactionSupport" value="false"/>
+    </bean>
+    
+    
+     <!--redisCacheTemplateGWLIST -->
+    <bean id="redisCacheTemplateGWList" class="org.springframework.data.redis.core.RedisTemplate">
+       <property name="connectionFactory">
+            <bean class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory"
+                  destroy-method="destroy" p:hostName="${gwlist.redis.host}" p:port="${gwlist.redis.port}"
+                  p:password="${gwlist.redis.pass}" p:poolConfig-ref="redisJedisPoolConfig"
+                  p:timeout="${gwlist.redis.timeout}"
+                  p:usePool="true"/>
+        </property>
+        <property name="hashKeySerializer" ref="stringSerializer"/>
+        <property name="keySerializer" ref="stringSerializer"/>
+        <property name="stringSerializer" ref="stringSerializer"/>
+        <property name="enableTransactionSupport" value="false"/>
+    </bean>
+    
+          <!--redisCacheTemplateOtherPolicy -->
+    <bean id="redisCacheTemplateOtherPolicy" class="org.springframework.data.redis.core.RedisTemplate">
+       <property name="connectionFactory">
+            <bean class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory"
+                  destroy-method="destroy" p:hostName="${otherPolicy.redis.host}" p:port="${otherPolicy.redis.port}"
+                  p:password="${otherPolicy.redis.pass}" p:poolConfig-ref="redisJedisPoolConfig"
+                  p:timeout="${otherPolicy.redis.timeout}"
+                  p:usePool="true"/>
+        </property>
+        <property name="hashKeySerializer" ref="stringSerializer"/>
+        <property name="keySerializer" ref="stringSerializer"/>
+        <property name="stringSerializer" ref="stringSerializer"/>
+        <property name="enableTransactionSupport" value="false"/>
+    </bean>
+    
+    
+              <!--redisCacheTemplatePolicy -->
+    <bean id="redisCacheTemplatePolicy" class="org.springframework.data.redis.core.RedisTemplate">
+       <property name="connectionFactory">
+            <bean class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory"
+                  destroy-method="destroy" p:hostName="${policy.redis.host}" p:port="${policy.redis.port}"
+                  p:password="${policy.redis.pass}" p:poolConfig-ref="redisJedisPoolConfig"
+                  p:timeout="${policy.redis.timeout}"
+                  p:usePool="true"/>
+        </property>
+        <property name="hashKeySerializer" ref="stringSerializer"/>
+        <property name="keySerializer" ref="stringSerializer"/>
+        <property name="stringSerializer" ref="stringSerializer"/>
+        <property name="enableTransactionSupport" value="false"/>
+    </bean>
+    
+    <!--redisCacheTemplateList -->
+    <bean id="redisCacheTemplateList" class="org.springframework.data.redis.core.RedisTemplate">
+       <property name="connectionFactory">
+            <bean class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory"
+                  destroy-method="destroy" p:hostName="${policy.redis.host}" p:port="${policy.redis.port}"
+                  p:password="${policy.redis.pass}" p:poolConfig-ref="redisJedisPoolConfig"
+                  p:timeout="${policy.redis.timeout}"
+                  p:usePool="true"/>
+        </property>
+        <property name="hashKeySerializer" ref="stringSerializer"/>
+        <property name="keySerializer" ref="stringSerializer"/>
+        <property name="stringSerializer" ref="stringSerializer"/>
+        <property name="enableTransactionSupport" value="false"/>
+    </bean>
+    
+
+</beans>

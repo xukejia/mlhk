@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:context="http://www.springframework.org/schema/context" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:jee="http://www.springframework.org/schema/jee" xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:lang="http://www.springframework.org/schema/lang" xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+	xmlns:jpa="http://www.springframework.org/schema/data/jpa" xmlns:task="http://www.springframework.org/schema/task"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd
+		http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-4.3.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.3.xsd
+		http://www.springframework.org/schema/lang http://www.springframework.org/schema/lang/spring-lang-4.3.xsd
+		http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-4.3.xsd
+		http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa.xsd
+		http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-4.3.xsd">
+
+	<!-- 扫描注解 -->
+	<context:component-scan base-package="com.direct.gn.component" />
+	
+	<task:annotation-driven/>
+	
+	<!-- 数据源配置 -->
+	<bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource" primary="true">
+		<property name="username" value="${jdbc.user}" />
+		<property name="url" value="${jdbc.url}" />
+		<property name="password" value="${jdbc.password}" />
+		<property name="filters" value="${jdbc.filters}" />
+		<property name="maxActive" value="${jdbc.maxActive}" />
+		<property name="initialSize" value="${jdbc.initialSize}" />
+		<property name="maxWait" value="${jdbc.maxWait}" />
+		<property name="minIdle" value="${jdbc.minIdle}" />
+		<property name="timeBetweenEvictionRunsMillis" value="${jdbc.timeBetweenEvictionRunsMillis}" />
+		<property name="minEvictableIdleTimeMillis" value="${jdbc.minEvictableIdleTimeMillis}" />
+		<property name="validationQuery" value="${jdbc.validationQuery}" />
+		<property name="testOnBorrow" value="${jdbc.testOnBorrow}" />
+		<property name="testOnReturn" value="${jdbc.testOnReturn}" />
+		<property name="testWhileIdle" value="${jdbc.testWhileIdle}" />
+		<property name="poolPreparedStatements" value="${jdbc.poolPreparedStatements}" />
+		<property name="maxPoolPreparedStatementPerConnectionSize" value="${jdbc.maxPoolPreparedStatementPerConnectionSize}" />
+	</bean>
+
+	<!--只读数据源-->
+	<bean id="dataSource_R" class="com.alibaba.druid.pool.DruidDataSource">
+		<property name="username" value="${jdbc_r.user}" />
+		<property name="url" value="${jdbc_r.url}" />
+		<property name="password" value="${jdbc_r.password}" />
+		<property name="filters" value="${jdbc_r.filters}" />
+		<property name="maxActive" value="${jdbc_r.maxActive}" />
+		<property name="initialSize" value="${jdbc_r.initialSize}" />
+		<property name="maxWait" value="${jdbc_r.maxWait}" />
+		<property name="minIdle" value="${jdbc_r.minIdle}" />
+		<property name="timeBetweenEvictionRunsMillis" value="${jdbc_r.timeBetweenEvictionRunsMillis}" />
+		<property name="minEvictableIdleTimeMillis" value="${jdbc_r.minEvictableIdleTimeMillis}" />
+		<property name="validationQuery" value="${jdbc_r.validationQuery}" />
+		<property name="testOnBorrow" value="${jdbc_r.testOnBorrow}" />
+		<property name="testOnReturn" value="${jdbc_r.testOnReturn}" />
+		<property name="testWhileIdle" value="${jdbc_r.testWhileIdle}" />
+		<property name="poolPreparedStatements" value="${jdbc_r.poolPreparedStatements}" />
+		<property name="maxPoolPreparedStatementPerConnectionSize" value="${jdbc_r.maxPoolPreparedStatementPerConnectionSize}" />
+	</bean>
+
+	<!-- 动态数据源 -->
+	<bean id="dynamicDataSource" class="com.direct.gn.datasource.DynamicDataSource">
+		<!-- 通过key-value关联数据源 -->
+		<property name="targetDataSources">
+			<map key-type="java.lang.String">
+				<entry value-ref="dataSource" key="dataSource"></entry>
+				<entry value-ref="dataSource_R" key="dataSource_R"></entry>
+			</map>
+		</property>
+		<property name="defaultTargetDataSource" ref="dataSource" />
+	</bean>
+
+	<!--会话工厂 -->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dynamicDataSource" />
+		<property name="configLocation" value="classpath:mybatis-config.xml" />
+		<property name="mapperLocations" value="classpath*:/com/chobits81/cc/component/*/dao/*.xml" />
+		<property name="typeAliasesPackage" value="com.direct.gn.model.*.*" />
+	</bean>
+
+	<!-- 映射扫描 -->
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="com.direct.gn.component.*.dao" />
+	</bean>
+
+	<!-- 会话模版 -->
+	<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
+		<constructor-arg index="0" ref="sqlSessionFactory" />
+	</bean>
+
+	<!-- 定义事务管理器 -->
+	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	<!-- 支持事务注解 -->
+	<tx:annotation-driven transaction-manager="transactionManager"
+		proxy-target-class="true" />
+
+	<aop:config proxy-target-class="true">
+		<aop:pointcut id="servicePointcut" expression="execution(* com.direct.gn.component.*.service.impl.*Service*.*(..))" />
+		<aop:advisor advice-ref="txAdvice" pointcut-ref="servicePointcut" />
+	</aop:config>
+	<tx:advice id="txAdvice">
+		<tx:attributes>
+			<tx:method name="add*" propagation="REQUIRED" />
+			<tx:method name="append*" propagation="REQUIRED" />
+			<tx:method name="save*" propagation="REQUIRED" />
+			<tx:method name="update*" propagation="REQUIRED" />
+			<tx:method name="modify*" propagation="REQUIRED" />
+			<tx:method name="edit*" propagation="REQUIRED" />
+			<tx:method name="insert*" propagation="REQUIRED" />
+			<tx:method name="delete*" propagation="REQUIRED" />
+			<tx:method name="remove*" propagation="REQUIRED" />
+			<tx:method name="repair" propagation="REQUIRED" />
+			<tx:method name="build*" propagation="REQUIRED" />
+		<!--	<tx:method name="*" read-only="true" />-->
+		</tx:attributes>
+	</tx:advice>
+</beans>

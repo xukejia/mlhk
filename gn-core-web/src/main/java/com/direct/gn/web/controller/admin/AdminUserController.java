@@ -1,0 +1,101 @@
+/**
+ * com.direct.gn
+ */
+package com.direct.gn.web.controller.admin;
+
+import java.util.Map;
+
+import javax.servlet.http.HttpSession;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.direct.gn.component.admin.model.AdminRole;
+import com.direct.gn.component.admin.model.AdminUser;
+import com.direct.gn.component.admin.service.AdminRoleService;
+import com.direct.gn.component.admin.service.AdminUserService;
+import com.direct.gn.exception.CustomException;
+import com.direct.gn.model.PageQuery;
+import com.direct.gn.result.QueryResult;
+import com.direct.gn.web.controller.BaseController;
+
+/**
+ * @author cc
+ *
+ */
+@Controller
+@RequestMapping(value = "/admin/adminUser")
+public class AdminUserController extends BaseController
+{
+	@Autowired
+	private AdminUserService adminUserService;
+
+	@Autowired
+	private AdminRoleService adminRoleService;
+	// ////////////////////
+
+	@RequestMapping(value = "list", method = { RequestMethod.POST, RequestMethod.GET })
+	public String list(AdminUser record, PageQuery page, ModelMap modelMap)
+	{
+		QueryResult<AdminUser> result = adminUserService.selectListByPage(record , page);
+		modelMap.put("resultList", result.getResults());
+		modelMap.put("page", result.getPageResult());
+		modelMap.put("record", record);
+
+		Map<Integer, String> roleMap = this.adminRoleService.getRoleMap(new AdminRole());
+		modelMap.put("roleMap", roleMap);
+		
+		return "adminUser/list";
+	}
+
+	@ResponseBody
+	@RequestMapping(value = "add", method = { RequestMethod.POST, RequestMethod.GET })
+	public Object add(AdminUser record, ModelMap modelMap)
+	{
+		AdminUser vo = null;
+		if (null == record.getId() || -1 == record.getId().intValue())
+		{
+			vo = new AdminUser();
+		} else
+		{
+			vo = this.adminUserService.selectById(record.getId());
+			vo.setPasswd(null);
+		}
+
+		modelMap.addAttribute("record", vo);
+		return vo;
+	}
+
+	@RequestMapping(value = "save", method = { RequestMethod.POST, RequestMethod.GET })
+	public String save(AdminUser record, ModelMap modelMap, HttpSession session)
+	{
+		try
+		{
+			this.adminUserService.save(record);
+		} catch (CustomException e)
+		{
+			logger.error(e.getMessage(), e);
+		}
+
+		return "redirect:/admin/adminUser/list";
+	}
+
+	@RequestMapping(value = "del", method = { RequestMethod.POST, RequestMethod.GET })
+	public String del(AdminUser record, ModelMap modelMap)
+	{
+		try
+		{
+			if (null != record.getId())
+				this.adminUserService.deleteById(record.getId());
+		} catch (CustomException e)
+		{
+			logger.error(e.getMessage(), e);
+		}
+
+		return "redirect:/admin/adminUser/list";
+	}
+}

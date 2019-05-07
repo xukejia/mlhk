@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding">
+    <file url="file://$PROJECT_DIR$" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/gn-core-cache" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/gn-core-dao" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/gn-core-mongodb" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/gn-core-mq" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/gn-core-utils" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/gn-core-utils-http" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/gn-core-utils-web" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/gn-core-web" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/gn-interface-model-ota" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/gn-service-admin" charset="UTF-8" />
+  </component>
+</project>

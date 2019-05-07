@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="gn-core-cache" />
+        <module name="gn-core-dao" />
+        <module name="gn-core-mongodb" />
+        <module name="gn-core-mq" />
+        <module name="gn-core-utils" />
+        <module name="gn-core-utils-http" />
+        <module name="gn-core-utils-web" />
+        <module name="gn-core-web" />
+        <module name="gn-interface-model-ota" />
+        <module name="gn-service-admin" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="gn-core-cache" target="1.8" />
+      <module name="gn-core-dao" target="1.8" />
+      <module name="gn-core-mongodb" target="1.8" />
+      <module name="gn-core-mq" target="1.8" />
+      <module name="gn-core-parent" target="1.8" />
+      <module name="gn-core-utils" target="1.8" />
+      <module name="gn-core-utils-http" target="1.8" />
+      <module name="gn-core-utils-web" target="1.8" />
+      <module name="gn-core-web" target="1.8" />
+      <module name="gn-interface-model-ota" target="1.8" />
+      <module name="gn-service-admin" target="1.8" />
+    </bytecodeTargetLevel>
+  </component>
+</project>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/gn-core-cache/gn-core-cache.iml" filepath="$PROJECT_DIR$/gn-core-cache/gn-core-cache.iml" />
+      <module fileurl="file://$PROJECT_DIR$/gn-core-dao/gn-core-dao.iml" filepath="$PROJECT_DIR$/gn-core-dao/gn-core-dao.iml" />
+      <module fileurl="file://$PROJECT_DIR$/gn-core-mongodb/gn-core-mongodb.iml" filepath="$PROJECT_DIR$/gn-core-mongodb/gn-core-mongodb.iml" />
+      <module fileurl="file://$PROJECT_DIR$/gn-core-mq/gn-core-mq.iml" filepath="$PROJECT_DIR$/gn-core-mq/gn-core-mq.iml" />
+      <module fileurl="file://$PROJECT_DIR$/gn-core-parent.iml" filepath="$PROJECT_DIR$/gn-core-parent.iml" />
+      <module fileurl="file://$PROJECT_DIR$/gn-core-utils/gn-core-utils.iml" filepath="$PROJECT_DIR$/gn-core-utils/gn-core-utils.iml" />
+      <module fileurl="file://$PROJECT_DIR$/gn-core-utils-http/gn-core-utils-http.iml" filepath="$PROJECT_DIR$/gn-core-utils-http/gn-core-utils-http.iml" />
+      <module fileurl="file://$PROJECT_DIR$/gn-core-utils-web/gn-core-utils-web.iml" filepath="$PROJECT_DIR$/gn-core-utils-web/gn-core-utils-web.iml" />
+      <module fileurl="file://$PROJECT_DIR$/gn-core-web/gn-core-web.iml" filepath="$PROJECT_DIR$/gn-core-web/gn-core-web.iml" />
+      <module fileurl="file://$PROJECT_DIR$/gn-interface-model-ota/gn-interface-model-ota.iml" filepath="$PROJECT_DIR$/gn-interface-model-ota/gn-interface-model-ota.iml" />
+      <module fileurl="file://$PROJECT_DIR$/gn-service-admin/gn-service-admin.iml" filepath="$PROJECT_DIR$/gn-service-admin/gn-service-admin.iml" />
+    </modules>
+  </component>
+</project>
